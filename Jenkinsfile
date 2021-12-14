@@ -1,10 +1,6 @@
 pipeline{
     agent any
     stages{
-         stage('Initialize'){
-        def dockerHome = tool 'myDocker'
-        env.PATH = "${dockerHome}/bin:${env.PATH}"
-    }
         stage('Get Source'){
             steps{
                git url : 'https://github.com/maiconsa/app-k8s-teste', branch : 'main'
