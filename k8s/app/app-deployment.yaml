@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: app
+spec:
+  replicas: 3
+  selector: 
+     matchLabels:
+      app: app
+  template:
+    metadata:
+      name: app
+      labels:
+        app: app
+    spec:
+      containers:
+      - name : app
+        image: maiconsa/app-teste-maicon:1.0.6
+        resources:
+          requests:
+            memory: "50Mi"
+            cpu: "0.1"
+          limits:
+            memory: "100Mi"
+            cpu: "0.2"
+        ports:
+        - containerPort: 4000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 4000
+        livenessProbe:
+          httpGet:
+            path : /healthcheck
+            port: 4000
+          initialDelaySeconds: 10
+        imagePullPolicy: Always
+      imagePullSecrets:
+        - name: dockerhub
