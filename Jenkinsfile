@@ -9,16 +9,18 @@ pipeline{
         stage('Docker build '){
             steps{
                 script{
-                    dockerapp = docker.build("maiconsa/app-teste-maicon:${env.BUILD_ID}",'-f . .')
+                    dockerapp = docker.build("maiconsa/app-teste-maicon:${env.BUILD_ID}")
                 }
             }
         }
         stage('Docker push Image'){
             steps{
                 script{
-                    docker.withRegistry('https://registry.hub.docker.com','dockerhub')
-                    dockerapp.push('latest')
-                    dockerapp.push("${env.BUILD_ID}")
+                    docker.withRegistry('https://registry.hub.docker.com','dockerhub'){ 
+                        dockerapp.push('latest')
+                        dockerapp.push("${env.BUILD_ID}")
+                        }
+
                 }
             }
         }
